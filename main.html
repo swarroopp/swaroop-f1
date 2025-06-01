@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>max verstappen is ther goat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a0a0a 100%);
+            color: #ffffff;
+            overflow: hidden;
+            height: 100vh;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease;
+        }
+
+        .header.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .f1-logo {
+            width: 60px;
+            height: 35px;
+            background: linear-gradient(45deg, #e10600, #ff4444);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 18px;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.3);
+        }
+
+        .title {
+            font-size: 28px;
+            font-weight: 300;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            background: linear-gradient(45deg, #ffffff, #cccccc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .controls {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            background: rgba(225, 6, 0, 0.3);
+            border-color: #e10600;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(225, 6, 0, 0.2);
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            overflow: hidden;
+        }
+
+        .video-frame {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #000;
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 5;
+        }
+
+        .spinner {
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top: 3px solid #e10600;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .loading-text {
+            font-size: 18px;
+            color: #cccccc;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 10;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 50%, transparent 100%);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(10px);
+            transition: opacity 0.3s ease;
+        }
+
+        .footer.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .status-bar {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            font-size: 14px;
+            color: #cccccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .live-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .live-dot {
+            width: 12px;
+            height: 12px;
+            background: #e10600;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.1); }
+        }
+
+        .racing-stripe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, 
+                #e10600 0%, 
+                #ff4444 25%, 
+                #ffffff 50%, 
+                #ff4444 75%, 
+                #e10600 100%
+            );
+            animation: slide 3s linear infinite;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            .header, .footer {
+                padding: 15px 20px;
+            }
+            
+            .title {
+                font-size: 20px;
+                letter-spacing: 2px;
+            }
+            
+            .f1-logo {
+                width: 45px;
+                height: 25px;
+                font-size: 14px;
+            }
+            
+            .controls {
+                gap: 10px;
+            }
+            
+            .btn {
+                padding: 8px 16px;
+                font-size: 12px;
+            }
+        }
+
+        /* Hide controls on inactivity */
+        .container.inactive .header,
+        .container.inactive .footer {
+            opacity: 0;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <div class="racing-stripe"></div>
+        
+        <div class="header" id="header">
+            <div class="logo">
+                <div class="f1-logo">F1</div>
+                <div class="title">hamilton is gay</div>
+            </div>
+            <div class="controls">
+                <button class="btn" onclick="toggleFullscreen()">Fullscreen</button>
+                <button class="btn" onclick="refreshStream()">Refresh</button>
+                <button class="btn" onclick="enableAudio()" id="audioBtn">Enable Audio</button>
+            </div>
+        </div>
+
+        <div class="video-container">
+            <div class="loading" id="loading">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading Stream...</div>
+            </div>
+            <iframe 
+                class="video-frame" 
+                id="videoFrame"
+                src="https://givemereddit.org/f1/formula1.html"
+                allowfullscreen 
+                scrolling="no" 
+                allowtransparency="true"
+                allow="autoplay; fullscreen; encrypted-media; picture-in-picture"
+                onload="hideLoading()"
+            ></iframe>
+        </div>
+
+        <div class="footer" id="footer">
+            <div class="status-bar">
+                <div class="live-indicator">
+                    <div class="live-dot"></div>
+                    <span>Live Stream</span>
+                </div>
+                <span>•</span>
+                <span>Formula 1</span>
+                <span>•</span>
+                <span id="currentTime"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let inactivityTimer;
+        const container = document.getElementById('container');
+        const header = document.getElementById('header');
+        const footer = document.getElementById('footer');
+
+        // Hide loading spinner when iframe loads
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        // Toggle fullscreen
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log('Error attempting to enable fullscreen:', err);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        }
+
+        // Refresh stream
+        function refreshStream() {
+            const iframe = document.getElementById('videoFrame');
+            const loading = document.getElementById('loading');
+            loading.style.display = 'block';
+            iframe.src = iframe.src;
+        }
+
+        // Enable audio interaction
+        function enableAudio() {
+            const iframe = document.getElementById('videoFrame');
+            const audioBtn = document.getElementById('audioBtn');
+            
+            // Try to interact with the iframe to enable audio
+            iframe.contentWindow.postMessage('enableAudio', '*');
+            
+            // Update button
+            audioBtn.textContent = 'Audio Enabled';
+            audioBtn.style.background = 'rgba(0, 255, 0, 0.3)';
+            audioBtn.style.borderColor = '#00ff00';
+            
+            // Try to reload with audio permissions
+            setTimeout(() => {
+                iframe.src = iframe.src + (iframe.src.includes('?') ? '&' : '?') + 'autoplay=1&muted=0';
+            }, 100);
+        }
+
+        // Update current time
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', { 
+                hour12: false, 
+                hour: '2-digit', 
+                minute: '2-digit' 
+            });
+            document.getElementById('currentTime').textContent = timeString;
+        }
+
+        // Auto-hide controls
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            container.classList.remove('inactive');
+            
+            inactivityTimer = setTimeout(() => {
+                container.classList.add('inactive');
+            }, 3000);
+        }
+
+        // Event listeners
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keydown', resetInactivityTimer);
+        document.addEventListener('click', resetInactivityTimer);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            switch(e.key) {
+                case 'f':
+                case 'F':
+                    toggleFullscreen();
+                    break;
+                case 'r':
+                case 'R':
+                    refreshStream();
+                    break;
+                case 'a':
+                case 'A':
+                    enableAudio();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    break;
+            }
+        });
+
+        // Initialize
+        updateTime();
+        setInterval(updateTime, 1000);
+        resetInactivityTimer();
+
+        // Handle fullscreen changes
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                document.body.style.cursor = 'none';
+            } else {
+                document.body.style.cursor = 'default';
+            }
+        });
+    </script>
+</body>
+</html>
